@@ -36,7 +36,8 @@ Aucun CNAME n’est créé et le domaine `dimacarrosserie.ch` n’est pas dépla
 - `src/components/` : navigation, médias, portfolio, assistant, devis.
 - `src/pages.tsx` : compositions des pages ; services et projets tirent leurs données du référentiel.
 - `src/adapters/` : limites explicites entre l’interface et les services d’envoi/IA.
-- `src/style.css` : tokens et styles responsives, sans bibliothèque d’animation.
+- `src/style.css` : styles de base des pages ; `src/ui.css` : navigation fixe, menu plein écran, animations, avis, contact et règles responsives.
+- `src/motion.ts` : révélation au défilement, parallaxe, compteurs et comportement de l’en-tête (sans bibliothèque, désactivé avec `prefers-reduced-motion`).
 - `scripts/prerender.tsx` : génération HTML et SEO.
 - `public/media/` : dérivés WebP et vidéos MP4 optimisées ; aucun original modifié.
 - `docs/` : provenance, audit de contenu, tests et intégrations.
@@ -45,7 +46,7 @@ Les originaux sont conservés hors du dépôt, dans le ZIP utilisateur et dans `
 
 ## Modifier les contenus
 
-**Coordonnées** : modifier `business` dans `src/data/content.ts`. Les coordonnées secondaires des fondateurs figurent dans `Contact` dans `src/pages.tsx`. Les horaires restent à confirmer et ne sont pas publiés sous forme de planning.
+**Coordonnées et horaires** : modifier `business` dans `src/data/content.ts` (téléphone, e-mail, adresse, horaires, numéros directs des fondateurs, liens Instagram, Google Maps et fiche Google). Les horaires publiés (lundi–vendredi 08:00–12:00 / 13:20–18:15) sont ceux de la fiche Google et du pied de page de l’ancien site ; la page Contact de l’ancien site indiquait aussi le samedi matin, à confirmer avec DIMA.
 
 **Services** : éditer `services` : nom, slug, image, introduction, prestations, étapes, FAQ et variante (`split`, `wide`, `portrait`). Les liens, les pages et les données structurées sont générés depuis ces objets.
 
@@ -53,7 +54,7 @@ Les originaux sont conservés hors du dépôt, dans le ZIP utilisateur et dans `
 
 **Ajouter une réalisation** : ajouter des dérivés au dossier media, déclarer leurs dimensions dans `media.json`, puis un objet dans `projects`. Un slug crée automatiquement `/realisations/slug/`. Décrire uniquement les gestes visibles ou le dossier fourni. Pour des études détaillées, renseigner `stages` avec les preuves disponibles. Ne pas déduire un diagnostic, un délai ou le résultat final de photos partielles. Les catégories sans projet ne sont pas affichées.
 
-**Avis** : aucun témoignage n’est publié. Les anciens textes associés à des images de stock n’ont pas une provenance suffisante. Fournir un lien public ou une autorisation avec un texte validé avant intégration ; ne pas ajouter de note agrégée sans source actualisée.
+**Avis Google** : `reviews`, `silentReviewers` et `googleRating` dans `src/data/content.ts` reproduisent les 23 avis publics de la fiche Google (relevés le 21 septembre 2026, note 5,0). Mettre à jour ces trois valeurs lors de nouveaux avis ; la note agrégée alimente aussi les données structurées.
 
 ## Formulaire et assistant
 

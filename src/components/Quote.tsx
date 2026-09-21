@@ -1,3 +1,4 @@
+import { ArrowDownIcon, ArrowLeftIcon, ArrowIcon, CheckIcon } from "./Icons";
 import { useEffect, useRef, useState } from "react";
 import { services, business } from "../data/content";
 import {
@@ -168,7 +169,7 @@ export default function Quote() {
               Ouvrir mon e-mail <Arrow />
             </a>
             <button className="text-link" onClick={download}>
-              Télécharger le récapitulatif ↓
+              Télécharger le récapitulatif <ArrowDownIcon size={15} />
             </button>
             <details>
               <summary>Voir le récapitulatif</summary>
@@ -241,7 +242,11 @@ export default function Quote() {
                   />
                   <span>{s}</span>
                   <span aria-hidden="true">
-                    {data.service === s ? "✓" : "↗"}
+                    {data.service === s ? (
+                      <CheckIcon size={16} />
+                    ) : (
+                      <ArrowIcon size={16} />
+                    )}
                   </span>
                 </label>
               ))}
@@ -395,7 +400,7 @@ export default function Quote() {
               className="back-button"
               onClick={() => go(step - 1)}
             >
-              ← Retour
+              <ArrowLeftIcon size={15} /> Retour
             </button>
           )}
           <button className="button" disabled={busy} type="submit">

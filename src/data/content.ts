@@ -1,13 +1,165 @@
 export const business = {
   name: "DIMA AR Carrosserie Sàrl",
+  shortName: "DIMA AR",
   phone: "021 869 71 41",
   tel: "+41218697141",
   email: "info@dimacarrosserie.ch",
   address: "Chemin du Coteau 21a",
   city: "1123 Aclens",
+  region: "Vaud, Suisse",
+  plusCode: "HG9C+5C Aclens",
+  uid: "CHE-272.432.842",
   instagram: "https://www.instagram.com/dima.ar.carrosserie/",
-  maps: "https://www.google.com/maps/search/?api=1&query=DIMA+AR+Carrosserie+Chemin+du+Coteau+21a+1123+Aclens",
+  instagramHandle: "@dima.ar.carrosserie",
+  maps: "https://www.google.com/maps/search/?api=1&query=DIMA+AR+Carrosserie+S%C3%A0rl+Chemin+du+Coteau+21a+1123+Aclens",
+  mapsEmbed:
+    "https://www.google.com/maps?q=DIMA%20AR%20Carrosserie%20S%C3%A0rl%2C%20Chemin%20du%20Coteau%2021a%2C%201123%20Aclens&z=15&hl=fr&output=embed",
+  reviewsUrl:
+    "https://www.google.com/search?q=DIMA+AR+Carrosserie+S%C3%A0rl+Aclens+avis",
+  hours: [
+    ["Lundi – Vendredi", "08:00 – 12:00 · 13:20 – 18:15"],
+    ["Samedi – Dimanche", "Fermé"],
+  ] as [string, string][],
+  hoursNote: "Sur rendez-vous en dehors de ces horaires, selon disponibilité.",
+  founders: [
+    {
+      name: "Rizah Dibrani",
+      role: "Co-fondateur · Carrossier-peintre CFC",
+      phone: "076 338 10 02",
+      tel: "+41763381002",
+    },
+    {
+      name: "Arlind Mamuti",
+      role: "Co-fondateur · Carrossier-peintre CFC",
+      phone: "077 218 67 66",
+      tel: "+41772186766",
+    },
+  ],
 };
+export const googleRating = {
+  value: 5.0,
+  count: 23,
+  themes: [
+    ["travail", 9],
+    ["équipe", 4],
+    ["prix", 3],
+    ["personne de confiance", 2],
+  ] as [string, number][],
+};
+export type Review = { name: string; when: string; text: string; tag?: string };
+export const reviews: Review[] = [
+  {
+    name: "Jithurshan Lingam",
+    when: "il y a 3 mois",
+    text: "Très satisfait du travail réalisé chez Dima AR Carrosserie ! Accueil professionnel, travail soigné et dans les délais. Je recommande vivement cette carrosserie pour leur sérieux et la qualité du service.",
+    tag: "Délais respectés",
+  },
+  {
+    name: "Soh Bella",
+    when: "il y a 6 mois",
+    text: "Super carrosserie. Ma maman a amené son véhicule, elle a été très satisfaite du travail fourni. Le véhicule a été rendu dans un délai très rapide et surtout impeccable. Je recommande fortement.",
+    tag: "Local Guide",
+  },
+  {
+    name: "Jeremy Schmid",
+    when: "il y a 9 mois",
+    text: "J’ai amené mon véhicule dans cette carrosserie et je suis vraiment impressionné par la qualité du travail. Deux jeunes passionnés qui font les choses avec sérieux, soin et professionnalisme. L’accueil est top, les explications sont claires et le résultat final est impeccable : ma voiture est ressortie comme neuve. Ça fait plaisir de voir des personnes aussi motivées et investies dans leur métier. Je recommande à 100.",
+    tag: "Équipe passionnée",
+  },
+  {
+    name: "Mélick Transocier",
+    when: "il y a un an",
+    text: "Service impeccable ! J’ai confié ma voiture à cette carrosserie après un accrochage, et le résultat est bluffant : peinture parfaite, aucun défaut visible, on dirait qu’elle sort du concessionnaire. L’équipe est professionnelle, à l’écoute et très réactive. Les délais ont été respectés et le prix est tout à fait raisonnable. Je recommande les yeux fermés !",
+    tag: "Peinture",
+  },
+  {
+    name: "Blerim Ljika",
+    when: "il y a un an",
+    text: "Travail impeccable ! Ma voiture est ressortie comme neuve, on ne voit plus aucune trace du choc. Service rapide et de grande qualité, je recommande vivement cette carrosserie.",
+    tag: "Carrosserie",
+  },
+  {
+    name: "Bardh Dibrani",
+    when: "il y a un an",
+    text: "Un vrai coup de cœur ! Une équipe jeune, passionnée et pleine d’énergie qui redonne vie à votre voiture comme par magie. Leur professionnalisme se ressent dans chaque détail, et l’ambiance à l’atelier est aussi accueillante qu’efficace. On sent qu’on est entre de bonnes mains dès la première minute. Résultat : une carrosserie nickel et une super expérience client. Si vous cherchez des pros qui bossent avec le sourire (et du talent !), foncez sans hésiter.",
+    tag: "Expérience client",
+  },
+  {
+    name: "Fina Murseli",
+    when: "il y a 9 mois",
+    text: "Franchement au top, accueil sympa, réparations de qualité et prix raisonnables. On voit qu’ils prennent leur travail à cœur. Je reviendrai sans hésiter.",
+    tag: "Prix",
+  },
+  {
+    name: "Dardan Jashari",
+    when: "il y a un an",
+    text: "Un service au top du top chez DIMA AR CARROSSERIE ! Travail de carrosserie impeccable, finition parfaite, et une équipe passionnée et pro. Ma voiture est comme neuve. Je recommande les yeux fermés !",
+    tag: "Finition",
+  },
+  {
+    name: "Almira Selmanaj",
+    when: "il y a un an",
+    text: "Prise en charge rapide, travail top, professionnel et sérieux. Rien à redire, 5 étoiles méritées ! Équipe dynamique ! Je recommande.",
+    tag: "Prise en charge",
+  },
+  {
+    name: "Enver Mamuti",
+    when: "il y a un an",
+    text: "Magnifique ! Ces deux jeunes entrepreneurs sont très motivés et proposent un boulot de qualité, je recommande fortement cette carrosserie !",
+  },
+  {
+    name: "Vincent Caraça",
+    when: "il y a un an",
+    text: "Personnes de confiance, rapide et efficace, ils rassurent le client, c’est un super garage et ce sont des super personnes, je recommande à 100 %. Merci pour tout Dima.",
+    tag: "Confiance",
+  },
+  {
+    name: "Rems",
+    when: "il y a 11 mois",
+    text: "Carrosserie dynamique, personnel très sympathique et professionnel ! Endroit chaleureux, moderne et très bien situé, bravo.",
+    tag: "Local Guide",
+  },
+  {
+    name: "Nart Agushi",
+    when: "il y a 5 mois",
+    text: "Équipe au top, professionnels, je recommande les yeux fermés !",
+  },
+  {
+    name: "Diamant Halimi",
+    when: "il y a un an",
+    text: "Excellente qualité, deux jeunes à l’écoute de leur clientèle et professionnels dans leur travail. Je recommande cette carrosserie.",
+  },
+  {
+    name: "Anthony Bocca",
+    when: "il y a 11 mois",
+    text: "Un service de grande qualité, véhicule récupéré et livré après les réparations. Merci à vous !",
+    tag: "Véhicule livré",
+  },
+  {
+    name: "Deniz Karakus",
+    when: "il y a un an",
+    text: "Service rapide et pro, ma voiture est comme neuve. Prix honnête, merci.",
+    tag: "Prix",
+  },
+  {
+    name: "Bibi O.",
+    when: "il y a un an",
+    text: "Travail excellent. Je les suis depuis leur premier box, deux personnes de confiance. Je vous les conseille.",
+    tag: "Confiance",
+  },
+  {
+    name: "Devan Madzabou",
+    when: "il y a un an",
+    text: "Un service au top du top, à recommander fortement !",
+  },
+];
+export const silentReviewers = [
+  "Mirsad Shala",
+  "El Msh",
+  "dlc",
+  "Ludovic Ludovic",
+  "SelimPiano",
+];
 export type Service = {
   slug: string;
   name: string;
@@ -20,6 +172,7 @@ export type Service = {
   faq: [string, string][];
   variant: string;
   video?: string;
+  plus: [string, string][];
 };
 export const services: Service[] = [
   {
@@ -50,6 +203,24 @@ export const services: Service[] = [
       [
         "Comment commencer ?",
         "Appelez le 021 869 71 41 ou préparez votre demande de devis avec des photos des dommages.",
+      ],
+    ],
+    plus: [
+      [
+        "Un seul interlocuteur",
+        "L’atelier évalue, documente et transmet le dossier à votre assurance, avec photos et estimation détaillée.",
+      ],
+      [
+        "Franchise réglée sur place",
+        "Si une franchise est prévue, elle se règle directement à l’atelier ; le solde est traité avec l’assureur partenaire.",
+      ],
+      [
+        "Devis gratuit",
+        "L’évaluation des dommages et le devis ne vous engagent à rien.",
+      ],
+      [
+        "Véhicule restitué prêt",
+        "Vous êtes contacté dès que le véhicule est prêt à être récupéré dans les meilleures conditions.",
       ],
     ],
     variant: "split",
@@ -87,6 +258,24 @@ export const services: Service[] = [
         "La réparation des éléments en plastique fait partie des prestations de l’atelier.",
       ],
     ],
+    plus: [
+      [
+        "Prise en charge rapide",
+        "Intervenir vite pour limiter l’immobilisation de votre véhicule.",
+      ],
+      [
+        "Démarches assurance",
+        "Les échanges administratifs avec votre compagnie sont pris en charge par l’atelier.",
+      ],
+      [
+        "Équipements de pointe",
+        "Redressage, débosselage et préparation avec un outillage professionnel.",
+      ],
+      [
+        "Toutes marques",
+        "Véhicules de tourisme, utilitaires et véhicules premium.",
+      ],
+    ],
     variant: "wide",
   },
   {
@@ -122,6 +311,24 @@ export const services: Service[] = [
         "DIMA dispose d’une cabine de peinture professionnelle et d’un processus de cuisson.",
       ],
     ],
+    plus: [
+      [
+        "Cabine de peinture",
+        "Application homogène dans une cabine professionnelle, à l’abri des poussières.",
+      ],
+      [
+        "Four de cuisson",
+        "La cuisson garantit l’adhérence, la finition et la durabilité de la peinture.",
+      ],
+      [
+        "Large choix de teintes",
+        "Teinte d’origine reproduite ou personnalisation selon vos envies.",
+      ],
+      [
+        "Résultat durable",
+        "Vernis de protection contre les UV et les agressions extérieures.",
+      ],
+    ],
     variant: "portrait",
   },
   {
@@ -155,6 +362,24 @@ export const services: Service[] = [
         "Un déséquilibre peut provoquer des vibrations. L’atelier contrôle les roues pour identifier l’intervention appropriée.",
       ],
     ],
+    plus: [
+      [
+        "Équipement professionnel",
+        "Machines de montage et d’équilibrage qui préservent vos jantes.",
+      ],
+      [
+        "Conseil personnalisé",
+        "Le choix des pneus adapté à votre véhicule et à votre usage.",
+      ],
+      [
+        "Commande rapide",
+        "Un large choix de marques et de tailles, avec commande rapide si nécessaire.",
+      ],
+      [
+        "Créneau saisonnier",
+        "Réservez votre passage hiver/été pour éviter l’attente.",
+      ],
+    ],
     variant: "split",
   },
   {
@@ -186,6 +411,24 @@ export const services: Service[] = [
       [
         "Puis-je changer la couleur des jantes ?",
         "Oui, la peinture personnalisée des jantes est proposée. La teinte et la finition sont définies avec l’atelier.",
+      ],
+    ],
+    plus: [
+      [
+        "Technologie de redressage",
+        "Jantes en alliage ou en acier redressées sans les fragiliser.",
+      ],
+      [
+        "Finition proche du neuf",
+        "Ponçage, peinture et vernis pour un rendu professionnel.",
+      ],
+      [
+        "Alternative au remplacement",
+        "Une solution économique par rapport à une jante neuve.",
+      ],
+      [
+        "24 à 48 h",
+        "Selon les dégâts, certaines réparations sont possibles en un à deux jours.",
       ],
     ],
     variant: "portrait",
@@ -222,6 +465,24 @@ export const services: Service[] = [
         "Oui, le diagnostic électronique fait partie des prestations proposées.",
       ],
     ],
+    plus: [
+      [
+        "Toutes marques",
+        "Des techniciens formés pour entretenir tous types de véhicules.",
+      ],
+      [
+        "Matériel de pointe",
+        "Outils et logiciels de diagnostic pour un entretien précis.",
+      ],
+      [
+        "Transparence totale",
+        "Les interventions nécessaires vous sont expliquées avant toute opération.",
+      ],
+      [
+        "Suivi personnalisé",
+        "L’historique de votre véhicule est tenu à jour pour un entretien régulier.",
+      ],
+    ],
     variant: "split",
   },
   {
@@ -254,6 +515,24 @@ export const services: Service[] = [
       [
         "Peut-on préparer un véhicule avant une vente ?",
         "Oui, le nettoyage peut être adapté à une préparation avant vente. Décrivez l’état du véhicule pour établir le devis.",
+      ],
+    ],
+    plus: [
+      [
+        "Produits haut de gamme",
+        "Nettoyants professionnels respectueux du véhicule et de l’environnement.",
+      ],
+      [
+        "Formules à la carte",
+        "Nettoyage rapide, complet ou prestige selon vos besoins.",
+      ],
+      [
+        "Traitement céramique",
+        "Protection longue durée et rénovation des cuirs sur demande.",
+      ],
+      [
+        "Avant une vente",
+        "Une restitution impeccable, idéale avant une vente ou un événement.",
       ],
     ],
     variant: "wide",
@@ -289,6 +568,24 @@ export const services: Service[] = [
         "Oui, l’atelier propose une protection adaptée, notamment par cire ou traitement céramique.",
       ],
     ],
+    plus: [
+      [
+        "Outils professionnels",
+        "Polisseuses orbitales, tampons adaptés et produits premium.",
+      ],
+      [
+        "Plusieurs passes",
+        "Une application précise, sans hologrammes, pour un effet miroir.",
+      ],
+      [
+        "Soin sur mesure",
+        "Adapté au type de peinture, à l’état du vernis et à vos attentes.",
+      ],
+      [
+        "Protection",
+        "Cire, polish haute brillance ou traitement céramique après correction.",
+      ],
+    ],
     variant: "wide",
   },
   {
@@ -320,6 +617,21 @@ export const services: Service[] = [
         "Une protection UV est appliquée dans le cadre de la restauration.",
       ],
     ],
+    plus: [
+      [
+        "Technique contrôlée",
+        "Polissage mécanique, ponçage progressif et finition brillante.",
+      ],
+      ["Économique", "Bien moins coûteux qu’un remplacement complet du phare."],
+      [
+        "Tous types d’optiques",
+        "Plastique, polycarbonate ou verre, anciens ou récents.",
+      ],
+      [
+        "Sécurité",
+        "Une meilleure diffusion de la lumière, de nuit ou par mauvais temps.",
+      ],
+    ],
     variant: "split",
   },
 ];
@@ -338,18 +650,27 @@ export const faqs: [string, string][] = [
   ],
   [
     "Quels sont les horaires ?",
-    "Contactez l’atelier au 021 869 71 41 pour confirmer les horaires et organiser votre passage.",
+    "L’atelier est ouvert du lundi au vendredi, de 08:00 à 12:00 et de 13:20 à 18:15. Appelez le 021 869 71 41 pour convenir d’un rendez-vous.",
+  ],
+  [
+    "Le devis est-il gratuit ?",
+    "Oui. L’évaluation des dommages et le devis sont gratuits et sans engagement.",
+  ],
+  [
+    "Travaillez-vous sur toutes les marques ?",
+    "Oui, l’atelier intervient sur toutes les marques : véhicules de tourisme, utilitaires et véhicules premium.",
   ],
   ...services
     .filter((s) => !["gestion-des-sinistres"].includes(s.slug))
     .map((s) => s.faq[0]),
 ];
 export const nav = [
-  ["Services", "/services"],
+  ["Accueil", "/"],
+  ["Expertises", "/services"],
   ["Réalisations", "/realisations"],
   ["L’atelier", "/atelier"],
   ["À propos", "/a-propos"],
-  ["Avis", "/avis"],
+  ["Avis Google", "/avis"],
   ["Contact", "/contact"],
 ];
 export type Project = {
@@ -474,9 +795,9 @@ export const routeTitles: Record<string, string> = {
   "/services": "Nos expertises",
   "/realisations": "Réalisations",
   "/sinistres-assurances": "Sinistres & assurances",
-  "/a-propos": "Rizah & Arlind, l’histoire DIMA",
+  "/a-propos": "Rizah & Arlind, l’histoire DIMA AR",
   "/atelier": "L’atelier à Aclens",
-  "/avis": "Vos retours",
+  "/avis": "Avis Google : 5,0 sur 23 avis",
   "/faq": "Questions fréquentes",
   "/devis": "Demander un devis",
   "/contact": "Contacter l’atelier",
@@ -503,6 +824,10 @@ export function pageMeta(path: string) {
         ? p.description
         : path === "/a-propos"
           ? "Rizah Dibrani et Arlind Mamuti : deux carrossiers-peintres, plus de 15 ans d’expérience cumulée et un atelier à Aclens."
-          : `Découvrez ${routeTitles[path] || "DIMA AR"}, carrosserie, peinture et soin automobile au Chemin du Coteau 21a à Aclens. Contact : 021 869 71 41.`,
+          : path === "/avis"
+            ? "23 avis Google, note 5,0 sur 5. Les retours des clients de DIMA AR Carrosserie à Aclens : carrosserie, peinture, délais et accueil."
+            : path === "/contact"
+              ? "Appelez le 021 869 71 41 ou passez au Chemin du Coteau 21a, 1123 Aclens. Horaires, plan d’accès Google Maps, e-mail et numéros directs des fondateurs."
+              : `Découvrez ${routeTitles[path] || "DIMA AR"}, carrosserie, peinture et soin automobile au Chemin du Coteau 21a à Aclens. Contact : 021 869 71 41.`,
   };
 }

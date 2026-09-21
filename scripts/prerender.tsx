@@ -3,7 +3,14 @@ import { renderToPipeableStream } from "react-dom/server";
 import { Writable } from "node:stream";
 import { readFile, writeFile, mkdir, readdir } from "node:fs/promises";
 import App from "../src/App";
-import { routes, pageMeta, business, services } from "../src/data/content";
+import {
+  routes,
+  pageMeta,
+  business,
+  services,
+  googleRating,
+  reviews,
+} from "../src/data/content";
 const base = process.env.SITE_BASE || "/dima-ar/";
 const origin =
   process.env.SITE_ORIGIN || "https://welcometothenextlevel.github.io";
@@ -54,6 +61,42 @@ for (const path of [...routes, "/404"]) {
         addressCountry: "CH",
       },
       sameAs: [business.instagram],
+      priceRange: "$$",
+      image: origin + base + "media/07-960.webp",
+      openingHoursSpecification: [
+        {
+          "@type": "OpeningHoursSpecification",
+          dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+          opens: "08:00",
+          closes: "12:00",
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+          opens: "13:20",
+          closes: "18:15",
+        },
+      ],
+      aggregateRating: {
+        "@type": "AggregateRating",
+        ratingValue: googleRating.value,
+        reviewCount: googleRating.count,
+        bestRating: 5,
+      },
+      ...(path === "/avis"
+        ? {
+            review: reviews.slice(0, 10).map((r) => ({
+              "@type": "Review",
+              author: { "@type": "Person", name: r.name },
+              reviewRating: {
+                "@type": "Rating",
+                ratingValue: 5,
+                bestRating: 5,
+              },
+              reviewBody: r.text,
+            })),
+          }
+        : {}),
     },
   ];
   if (path !== "/") {

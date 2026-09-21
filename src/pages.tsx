@@ -4,8 +4,12 @@ import {
   services,
   projects,
   faqs,
+  reviews,
+  silentReviewers,
+  googleRating,
   type Service,
   type Project,
+  type Review,
 } from "./data/content";
 import {
   Photo,
@@ -16,6 +20,18 @@ import {
   href,
   Arrow,
 } from "./components/Media";
+import {
+  ArrowDownIcon,
+  ArrowLeftIcon,
+  ArrowIcon,
+  ClockIcon,
+  GoogleMark,
+  InstagramIcon,
+  MailIcon,
+  PhoneIcon,
+  PinIcon,
+  Stars,
+} from "./components/Icons";
 import { Gallery } from "./components/Gallery";
 import { QuoteCTA } from "./components/Shell";
 const Quote = lazy(() => import("./components/Quote"));
@@ -23,59 +39,145 @@ export function PageIntro({
   eyebrow,
   title,
   text,
+  dark = false,
 }: {
   eyebrow: string;
   title: string;
   text?: string;
+  dark?: boolean;
 }) {
   return (
-    <section className="page-intro section">
+    <section
+      className={"page-intro section" + (dark ? " page-intro-dark" : "")}
+    >
       <Eyebrow>{eyebrow}</Eyebrow>
-      <h1>{title}</h1>
+      <h1 data-split>{title}</h1>
       {text && <p className="intro-copy">{text}</p>}
     </section>
+  );
+}
+const marqueeItems = [
+  "Carrosserie",
+  "Peinture",
+  "Sinistres & assurances",
+  "Detailing",
+  "Jantes",
+  "Pneus",
+  "Entretien",
+  "Polissage",
+  "Phares",
+  "Toutes marques",
+];
+function Marquee() {
+  return (
+    <div className="marquee" aria-hidden="true">
+      <div className="marquee-track">
+        {[0, 1].map((k) => (
+          <div className="marquee-group" key={k}>
+            {marqueeItems.map((m) => (
+              <span key={m}>
+                {m}
+                <i />
+              </span>
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+function ReviewCard({ r, i }: { r: Review; i: number }) {
+  return (
+    <article
+      className="review-card"
+      style={{ "--i": i } as React.CSSProperties}
+    >
+      <div className="review-head">
+        <span className="review-avatar" aria-hidden="true">
+          {r.name.charAt(0)}
+        </span>
+        <div>
+          <h3>{r.name}</h3>
+          <span className="review-when">{r.when}</span>
+        </div>
+        <GoogleMark size={18} />
+      </div>
+      <Stars size={13} />
+      <p>{r.text}</p>
+      {r.tag && <span className="review-tag">{r.tag}</span>}
+    </article>
+  );
+}
+function GoogleBadge({ compact = false }: { compact?: boolean }) {
+  return (
+    <a
+      className={"google-badge" + (compact ? " google-badge-compact" : "")}
+      href={business.reviewsUrl}
+      target="_blank"
+      rel="noreferrer"
+    >
+      <GoogleMark size={compact ? 18 : 22} />
+      <span className="google-badge-score">
+        {googleRating.value.toFixed(1)}
+      </span>
+      <Stars size={compact ? 12 : 15} />
+      <span className="google-badge-count">
+        {googleRating.count} avis Google
+      </span>
+    </a>
   );
 }
 export function Home() {
   return (
     <>
-      <section className="hero">
+      <section className="hero" data-glow>
         <div className="hero-copy">
           <Eyebrow>Carrosserie · Aclens, Vaud</Eyebrow>
           <h1>
-            Le sens
-            <br />
-            du <em>détail.</em>
+            <span className="line">
+              <span>Le sens</span>
+            </span>
+            <span className="line">
+              <span>
+                du <em>détail.</em>
+              </span>
+            </span>
           </h1>
           <p>
             Carrosserie. Peinture. Soin automobile.
             <br />
             L’exigence du geste, à chaque étape.
           </p>
-          <Link to="/devis" className="button">
-            Demander un devis
-          </Link>
-          <Link to="/realisations" className="hero-secondary">
-            Explorer nos réalisations
-          </Link>
+          <div className="hero-actions">
+            <Link to="/devis" className="button button-light">
+              Demander un devis
+            </Link>
+            <Link to="/realisations" className="hero-secondary">
+              Explorer nos réalisations
+            </Link>
+          </div>
+          <GoogleBadge compact />
         </div>
         <div className="hero-image">
           <Photo
             id="07"
             alt="Coupé noir dans l’atelier DIMA AR, devant la cabine de peinture"
             eager
+            parallax
             sizes="(max-width: 700px) 100vw, 65vw"
           />
+          <span className="hero-scan" aria-hidden="true" />
           <span className="hero-image-note">À l’atelier / DIMA AR</span>
         </div>
         <div className="hero-baseline">
-          <span>RÉPARER. PRÉSERVER. RÉVÉLER.</span>
+          <span>Réparer. Préserver. Révéler.</span>
           <a href="#introduction">
-            Dans les règles de l’art <span aria-hidden="true">↓</span>
+            Dans les règles de l’art <ArrowDownIcon size={14} />
           </a>
-          <span>ACLENS · VAUD · CH</span>
+          <span>Aclens · Vaud · CH</span>
         </div>
       </section>
+      <Marquee />
       <section className="intro section" id="introduction">
         <Eyebrow>01 / L’esprit DIMA</Eyebrow>
         <div>
@@ -90,11 +192,40 @@ export function Home() {
             <p>
               À Aclens, Rizah Dibrani et Arlind Mamuti réunissent plus de 15 ans
               d’expérience cumulée. De la carrosserie à la peinture, de
-              l’entretien aux finitions, le même soin guide chaque intervention.
+              l’entretien aux finitions, le même soin guide chaque intervention,
+              sur toutes les marques.
             </p>
             <Link to="/a-propos">Les visages de DIMA</Link>
           </div>
         </div>
+        <ul className="stats" aria-label="DIMA AR en chiffres">
+          <li>
+            <strong>
+              <span data-count="5" data-decimals="1">
+                5,0
+              </span>
+            </strong>
+            <span>Note Google</span>
+          </li>
+          <li>
+            <strong>
+              <span data-count="23">23</span>
+            </strong>
+            <span>Avis cinq étoiles</span>
+          </li>
+          <li>
+            <strong>
+              <span data-count="9">9</span>
+            </strong>
+            <span>Expertises</span>
+          </li>
+          <li>
+            <strong>
+              <span data-count="15">15</span>+
+            </strong>
+            <span>Ans d’expérience cumulée</span>
+          </li>
+        </ul>
       </section>
       <section className="expertise section">
         <div className="section-heading">
@@ -113,28 +244,36 @@ export function Home() {
         </div>
         <div className="expertise-layout">
           <div className="expertise-visual">
-            <Photo
-              id="22"
-              alt="Préparation de la carrosserie et masquage en cabine"
-            />
+            <div className="frame">
+              <Photo
+                id="05"
+                alt="Reflets sur la carrosserie d’un coupé noir dans l’atelier DIMA AR"
+                sizes="(max-width: 700px) 100vw, 40vw"
+                parallax
+              />
+            </div>
             <p>
               La maîtrise se voit.
               <br />
               Elle commence bien avant la finition.
             </p>
           </div>
-          <div className="service-index">
+          <div className="service-index" data-stagger>
             {services.map((s, i) => (
-              <a href={href("/services/" + s.slug)} key={s.slug}>
+              <a
+                href={href("/services/" + s.slug)}
+                key={s.slug}
+                style={{ "--i": i } as React.CSSProperties}
+              >
                 <small>0{i + 1}</small>
                 <span>{s.name}</span>
-                <Arrow />
+                <ArrowIcon size={22} />
               </a>
             ))}
           </div>
         </div>
       </section>
-      <section className="craft section">
+      <section className="craft section" data-glow>
         <div className="craft-copy">
           <Eyebrow>03 / Dans l’atelier</Eyebrow>
           <h2>
@@ -177,31 +316,35 @@ export function Home() {
           <div>
             <p>
               Évaluation des dégâts, dossier, échanges avec votre assurance :
-              nous vous accompagnons jusqu’à la remise en état.
+              nous vous accompagnons jusqu’à la remise en état. Devis gratuit.
             </p>
             <Link to="/sinistres-assurances">
               Comprendre la prise en charge
             </Link>
           </div>
         </div>
-        <ol>
-          <li>
+        <ol data-stagger>
+          <li style={{ "--i": 0 } as React.CSSProperties}>
             <span>01</span>Évaluer
           </li>
-          <li>
+          <li style={{ "--i": 1 } as React.CSSProperties}>
             <span>02</span>Documenter
           </li>
-          <li>
+          <li style={{ "--i": 2 } as React.CSSProperties}>
             <span>03</span>Faire valider
           </li>
-          <li>
+          <li style={{ "--i": 3 } as React.CSSProperties}>
             <span>04</span>Réparer
           </li>
         </ol>
       </section>
       <section className="founders section">
-        <div className="founders-photo">
-          <Photo id="32" alt="Les visages de DIMA dans l’atelier" />
+        <div className="founders-photo frame">
+          <Photo
+            id="32"
+            alt="Rizah Dibrani et Arlind Mamuti dans l’atelier DIMA AR"
+            parallax
+          />
         </div>
         <div>
           <Eyebrow>05 / Deux parcours, une vision</Eyebrow>
@@ -218,20 +361,24 @@ export function Home() {
           <Link to="/a-propos">Notre histoire</Link>
         </div>
       </section>
-      <section className="review-teaser section">
-        <Eyebrow>La confiance se construit</Eyebrow>
-        <h2>
-          Un échange direct.
-          <br />
-          Un travail que vous pouvez voir.
-        </h2>
-        <div>
-          <p>
-            Découvrez les gestes de l’atelier, posez vos questions et partagez
-            votre expérience avec l’équipe.
-          </p>
-          <Link to="/avis">Vos retours</Link>
+      <section className="reviews-band section">
+        <div className="section-heading">
+          <div>
+            <Eyebrow>06 / Avis Google</Eyebrow>
+            <h2>
+              Ils nous ont
+              <br />
+              confié leur véhicule.
+            </h2>
+          </div>
+          <GoogleBadge />
         </div>
+        <div className="reviews-scroller" data-stagger>
+          {reviews.slice(0, 6).map((r, i) => (
+            <ReviewCard r={r} i={i} key={r.name} />
+          ))}
+        </div>
+        <Link to="/avis">Lire les {googleRating.count} avis</Link>
       </section>
       <QuoteCTA />
     </>
@@ -243,7 +390,7 @@ export function Services() {
       <PageIntro
         eyebrow="L’expertise DIMA AR"
         title="Le soin automobile, dans son ensemble."
-        text="De la réparation à l’entretien, choisissez la prestation adaptée à votre véhicule. Nous en définissons les contours avec vous."
+        text="De la réparation à l’entretien, choisissez la prestation adaptée à votre véhicule. Nous en définissons les contours avec vous. Toutes marques, devis gratuit."
       />
       <section className="service-overview section">
         {services.map((s, i) => (
@@ -253,7 +400,7 @@ export function Services() {
           >
             <a
               href={href("/services/" + s.slug)}
-              className="service-feature-image"
+              className="service-feature-image frame"
             >
               <Photo
                 id={s.image}
@@ -266,7 +413,7 @@ export function Services() {
               <h2>
                 <a href={href("/services/" + s.slug)}>{s.name}</a>
               </h2>
-              <p>{s.short}</p>
+              <p className="service-short">{s.short}</p>
               <p>{s.intro}</p>
               <Link to={"/services/" + s.slug}>Découvrir cette expertise</Link>
             </div>
@@ -286,7 +433,7 @@ export function ServicePage({ service: s }: { service: Service }) {
       <section className={"service-hero section " + s.variant}>
         <div>
           <a className="back-link" href={href("/services")}>
-            ← Toutes les expertises
+            <ArrowLeftIcon size={14} /> Toutes les expertises
           </a>
           <Eyebrow>{s.name} · Aclens</Eyebrow>
           <h1>{s.headline}</h1>
@@ -295,11 +442,14 @@ export function ServicePage({ service: s }: { service: Service }) {
             Parlons de votre véhicule
           </Link>
         </div>
-        <Photo
-          id={s.image}
-          alt={s.name + " : vue réelle de l’atelier DIMA"}
-          eager
-        />
+        <div className="frame">
+          <Photo
+            id={s.image}
+            alt={s.name + " : vue réelle de l’atelier DIMA"}
+            eager
+            parallax
+          />
+        </div>
       </section>
       <section className="service-body section">
         <div>
@@ -310,17 +460,29 @@ export function ServicePage({ service: s }: { service: Service }) {
             réaliser.
           </p>
         </div>
-        <ul>
+        <ul data-stagger>
           {s.items.map((item, i) => (
-            <li key={item}>
+            <li key={item} style={{ "--i": i } as React.CSSProperties}>
               <span>0{i + 1}</span>
               {item}
             </li>
           ))}
         </ul>
       </section>
+      <section className="service-plus section">
+        <Eyebrow>Ce qui fait la différence</Eyebrow>
+        <div className="plus-grid" data-stagger>
+          {s.plus.map(([t, d], i) => (
+            <article key={t} style={{ "--i": i } as React.CSSProperties}>
+              <span className="plus-index">0{i + 1}</span>
+              <h3>{t}</h3>
+              <p>{d}</p>
+            </article>
+          ))}
+        </div>
+      </section>
       {s.video && (
-        <section className="service-film section">
+        <section className="service-film section" data-glow>
           <div>
             <Eyebrow>Le travail en images</Eyebrow>
             <h2>
@@ -339,9 +501,9 @@ export function ServicePage({ service: s }: { service: Service }) {
       <section className="process section">
         <Eyebrow>Notre approche</Eyebrow>
         <h2>Les étapes font le résultat.</h2>
-        <ol>
+        <ol data-stagger>
           {s.process.map((p, i) => (
-            <li key={p}>
+            <li key={p} style={{ "--i": i } as React.CSSProperties}>
               <span>0{i + 1}</span>
               <h3>{p}</h3>
             </li>
@@ -384,7 +546,8 @@ export function Realisations() {
       <section className="section portfolio">
         <Gallery />
       </section>
-      <section className="instagram section">
+      <section className="instagram section" data-glow>
+        <InstagramIcon size={34} />
         <h2>
           La vie de l’atelier,
           <br />
@@ -396,7 +559,8 @@ export function Realisations() {
           target="_blank"
           rel="noreferrer"
         >
-          Suivre DIMA sur Instagram <Arrow />
+          <span className="link-label">Suivre {business.instagramHandle}</span>{" "}
+          <Arrow />
         </a>
       </section>
       <QuoteCTA />
@@ -415,7 +579,9 @@ export function ProjectPage({ project: p }: { project: Project }) {
         {p.video ? (
           <Film id={p.video} title={p.title} />
         ) : (
-          <Photo id={p.image} alt={p.title} eager />
+          <div className="frame">
+            <Photo id={p.image} alt={p.title} eager />
+          </div>
         )}
         <div className="project-notes">
           <Eyebrow>Un regard sur le travail</Eyebrow>
@@ -444,7 +610,9 @@ export function ProjectPage({ project: p }: { project: Project }) {
           {p.images
             .filter((id) => id !== p.image)
             .map((id) => (
-              <Photo key={id} id={id} alt={"Autre vue : " + p.title} />
+              <div className="frame" key={id}>
+                <Photo id={id} alt={"Autre vue : " + p.title} />
+              </div>
             ))}
         </section>
       )}
@@ -472,7 +640,14 @@ export function About() {
         title="Deux parcours. Le même soin."
       />
       <section className="about-opening section">
-        <Photo id="32" alt="L’équipe dans l’atelier DIMA AR" eager />
+        <div className="frame">
+          <Photo
+            id="32"
+            alt="Rizah Dibrani et Arlind Mamuti dans l’atelier DIMA AR"
+            eager
+            parallax
+          />
+        </div>
         <div>
           <Eyebrow>À l’origine de DIMA</Eyebrow>
           <h2>
@@ -481,14 +656,16 @@ export function About() {
             avant tout.
           </h2>
           <p>
-            Rizah Dibrani et Arlind Mamuti partagent une formation de
-            carrossier-peintre, un CFC et une expérience acquise dans différents
+            Rizah Dibrani et Arlind Mamuti sont deux passionnés d’automobile
+            unis par une vision commune : transformer leur savoir-faire en un
+            service de qualité supérieure. Tous deux carrossiers-peintres
+            titulaires du CFC, ils ont accumulé leur expérience dans différents
             garages de Suisse romande.
           </p>
           <p>
-            Leurs parcours réunissent plus de 15 ans d’expérience cumulée. Leur
-            projet commun prolonge ce travail : prendre soin d’un véhicule dans
-            son ensemble, avec une attention particulière aux détails.
+            Ensemble, ils cumulent plus de 15 ans d’expérience. Leur projet
+            commun prolonge ce travail : prendre soin d’un véhicule dans son
+            ensemble, avec une attention particulière aux détails.
           </p>
         </div>
       </section>
@@ -499,29 +676,72 @@ export function About() {
           <h2>Apprendre le métier.</h2>
           <p>
             La formation de carrossier-peintre et le CFC constituent la base.
-            Les garages de Suisse romande apportent l’expérience du terrain.
+            Les garages de Suisse romande apportent l’expérience du terrain, la
+            rigueur et l’ambition de faire mieux.
           </p>
         </article>
         <article>
           <span>02</span>
-          <h2>Affiner le regard.</h2>
+          <h2>Performance Detailing, Bussigny.</h2>
           <p>
-            À Bussigny, ils développent Performance Detailing, leur premier
-            atelier consacré au soin esthétique automobile.
+            Leur premier projet : un atelier spécialisé dans le detailing
+            automobile haut de gamme. L’engagement, le souci du détail et la
+            satisfaction des clients construisent rapidement une réputation
+            solide.
           </p>
         </article>
         <article>
           <span>03</span>
-          <h2>Créer DIMA AR.</h2>
+          <h2>Créer DIMA AR, Aclens.</h2>
           <p>
-            À Aclens, la carrosserie et la peinture viennent prolonger cette
-            approche. La réparation, l’entretien et la finition se retrouvent
+            Poussés par ce succès, ils créent leur propre carrosserie au Chemin
+            du Coteau 21a, un lieu à leur image, inauguré le 4 mai 2025. La
+            réparation, la peinture, l’entretien et la finition se retrouvent
             dans un même atelier.
           </p>
         </article>
       </section>
+      <section className="about-pillars section">
+        <Eyebrow>Ce que l’atelier vous propose</Eyebrow>
+        <div className="plus-grid" data-stagger>
+          {[
+            [
+              "Travaux de carrosserie",
+              "Réparations après sinistre, débosselage, redressage, remise en état.",
+            ],
+            [
+              "Peinture automobile",
+              "Peinture partielle ou complète avec finitions haut de gamme, cabine et four de cuisson.",
+            ],
+            [
+              "Detailing intérieur et extérieur",
+              "Polissage, traitement céramique, rénovation des cuirs, nettoyage en profondeur.",
+            ],
+            [
+              "Service rapide",
+              "Changement de pneus, entretien, petites réparations mécaniques, phares.",
+            ],
+            [
+              "Accompagnement complet",
+              "Gestion des sinistres avec les assurances, conseils personnalisés, devis transparents et gratuits.",
+            ],
+          ].map(([t, d], i) => (
+            <article key={t} style={{ "--i": i } as React.CSSProperties}>
+              <span className="plus-index">0{i + 1}</span>
+              <h3>{t}</h3>
+              <p>{d}</p>
+            </article>
+          ))}
+        </div>
+      </section>
       <section className="about-duo section">
-        <Photo id="33" alt="L’équipe réunie devant les véhicules à l’atelier" />
+        <div className="frame">
+          <Photo
+            id="33"
+            alt="L’équipe réunie devant les véhicules à l’atelier"
+            parallax
+          />
+        </div>
         <div>
           <h2>
             Des personnes.
@@ -531,9 +751,20 @@ export function About() {
             Un atelier.
           </h2>
           <p>
-            Le meilleur point de départ reste une conversation autour de votre
-            véhicule.
+            Chaque véhicule est une opportunité de faire la différence. Le
+            meilleur point de départ reste une conversation autour du vôtre.
           </p>
+          <div className="founder-cards">
+            {business.founders.map((f) => (
+              <a key={f.name} href={"tel:" + f.tel} className="founder-card">
+                <span className="eyebrow">{f.role}</span>
+                <strong>{f.name}</strong>
+                <span className="founder-phone">
+                  <PhoneIcon size={14} /> {f.phone}
+                </span>
+              </a>
+            ))}
+          </div>
           <Link to="/contact">Rencontrons-nous</Link>
         </div>
       </section>
@@ -549,11 +780,14 @@ export function Atelier() {
         title="Ici, le détail se travaille."
       />
       <section className="workshop-entry section">
-        <Photo
-          id="17"
-          alt="Façade de DIMA AR avec l’entrée de l’atelier et les véhicules"
-          eager
-        />
+        <div className="frame">
+          <Photo
+            id="17"
+            alt="Façade de DIMA AR avec l’entrée de l’atelier et les véhicules"
+            eager
+            parallax
+          />
+        </div>
         <div>
           <Eyebrow>Un lieu de métier</Eyebrow>
           <h2>
@@ -561,18 +795,25 @@ export function Atelier() {
             <br />à la cabine.
           </h2>
           <p>
-            L’atelier réunit le travail de carrosserie, la peinture, l’entretien
-            et les finitions. Les images racontent le lieu tel qu’il est :
-            vivant, technique et habité par les gestes du métier.
+            L’atelier réunit le travail de carrosserie, la cabine de peinture et
+            son four de cuisson, l’entretien et les finitions. Un lieu moderne,
+            chaleureux et bien situé, à quelques minutes de Morges.
           </p>
-          <a className="text-link" href={business.maps}>
-            Venir à Aclens <Arrow />
+          <a
+            className="text-link"
+            href={business.maps}
+            target="_blank"
+            rel="noreferrer"
+          >
+            <span className="link-label">Venir à Aclens</span> <Arrow />
           </a>
         </div>
       </section>
       <section className="workshop-sequence section">
         <article>
-          <Photo id="28" alt="Préparation d’un élément de carrosserie" />
+          <div className="frame">
+            <Photo id="28" alt="Préparation d’un élément de carrosserie" />
+          </div>
           <div>
             <span className="eyebrow">01 / La préparation</span>
             <h2>Construire la surface.</h2>
@@ -583,7 +824,9 @@ export function Atelier() {
           </div>
         </article>
         <article>
-          <Photo id="20" alt="Application de peinture dans la cabine DIMA" />
+          <div className="frame">
+            <Photo id="20" alt="Application de peinture dans la cabine DIMA" />
+          </div>
           <div>
             <span className="eyebrow">02 / La peinture</span>
             <h2>Maîtriser l’application.</h2>
@@ -594,7 +837,12 @@ export function Atelier() {
           </div>
         </article>
         <article>
-          <Photo id="07" alt="Reflets du coupé noir photographié à l’atelier" />
+          <div className="frame">
+            <Photo
+              id="07"
+              alt="Reflets du coupé noir photographié à l’atelier"
+            />
+          </div>
           <div>
             <span className="eyebrow">03 / La finition</span>
             <h2>Regarder de plus près.</h2>
@@ -605,7 +853,7 @@ export function Atelier() {
           </div>
         </article>
       </section>
-      <section className="craft section">
+      <section className="craft section" data-glow>
         <div>
           <Eyebrow>Le quotidien DIMA</Eyebrow>
           <h2>
@@ -615,7 +863,11 @@ export function Atelier() {
           </h2>
           <p>Une visite filmée dans les espaces de travail, avec l’équipe.</p>
         </div>
-        <Film id="26" title="Présentation de l’atelier DIMA AR" />
+        <Film
+          id="26"
+          title="Présentation de l’atelier DIMA AR"
+          label="Visiter l’atelier"
+        />
       </section>
       <QuoteCTA />
     </>
@@ -629,23 +881,23 @@ export function Insurance() {
     ],
     [
       "L’évaluation",
-      "Le véhicule est examiné pour estimer les réparations et établir le devis.",
+      "Le véhicule est inspecté pour estimer précisément les dommages et établir un devis détaillé, gratuit.",
     ],
     [
       "Le dossier",
-      "Photos et éléments d’évaluation sont préparés pour votre assurance.",
+      "Le rapport d’évaluation, les photos et le coût estimé sont transmis directement à votre assurance.",
     ],
     [
       "La validation",
-      "L’assureur examine la prise en charge selon votre contrat.",
+      "L’assureur accepte le devis, demande une contre-expertise ou ajuste selon votre contrat.",
     ],
     [
       "La réparation",
-      "L’intervention est organisée après validation du devis.",
+      "Dès validation, les réparations sont lancées immédiatement.",
     ],
     [
       "La restitution",
-      "L’atelier vous contacte lorsque le véhicule est prêt à être récupéré.",
+      "Une éventuelle franchise se règle à l’atelier ; le solde est traité avec l’assureur. Vous êtes contacté dès que le véhicule est prêt.",
     ],
   ];
   return (
@@ -665,7 +917,7 @@ export function Insurance() {
             état, avec un dossier préparé pour votre assurance.
           </p>
           <a className="button" href={"tel:" + business.tel}>
-            Parler à l’atelier <Arrow />
+            <span className="link-label">Parler à l’atelier</span> <Arrow />
           </a>
           <Link to="/devis?service=gestion-des-sinistres">
             Demander une prise en charge
@@ -673,13 +925,16 @@ export function Insurance() {
         </div>
       </section>
       <section className="insurance-process section">
-        <Photo
-          id="03"
-          alt="Échange autour d’un dossier dans les bureaux DIMA"
-        />
-        <div>
+        <div className="frame">
+          <Photo
+            id="03"
+            alt="Échange autour d’un dossier dans les bureaux DIMA"
+            parallax
+          />
+        </div>
+        <div data-stagger>
           {steps.map(([t, d], i) => (
-            <article key={t}>
+            <article key={t} style={{ "--i": i } as React.CSSProperties}>
               <span>0{i + 1}</span>
               <div>
                 <h2>{t}</h2>
@@ -699,7 +954,11 @@ export function Insurance() {
             ...services[0].faq,
             [
               "La franchise est-elle prise en charge ?",
-              "Le montant de la franchise et les modalités de règlement dépendent de votre contrat et de la réponse de l’assureur. Clarifiez ces points avant les travaux.",
+              "Si une franchise est prévue par votre contrat, vous la réglez directement à l’atelier. L’assurance prend en charge le reste directement avec nous lorsqu’elle est partenaire ; sinon, vous pourriez devoir avancer les frais avant remboursement.",
+            ],
+            [
+              "Que se passe-t-il si l’assurance refuse certaines réparations ?",
+              "L’assureur peut négocier ou refuser des réparations non couvertes par votre contrat. L’atelier vous explique les options avant de commencer les travaux.",
             ],
           ]}
         />
@@ -711,43 +970,112 @@ export function Insurance() {
 export function Reviews() {
   return (
     <>
-      <PageIntro
-        eyebrow="La confiance, au quotidien"
-        title="Votre expérience compte."
-        text="Le travail se voit dans les réalisations. La relation se construit dans les échanges avec l’atelier."
-      />
-      <section className="reviews-empty section">
+      <section className="reviews-hero section" data-glow>
         <div>
-          <Eyebrow>Vos retours</Eyebrow>
-          <h2>
-            Du concret,
+          <Eyebrow>Avis Google · DIMA AR Carrosserie Sàrl</Eyebrow>
+          <h1>
+            La confiance
             <br />
-            avant les étoiles.
+            se lit ici.
+          </h1>
+          <p className="intro-copy">
+            Vingt-trois avis, tous à cinq étoiles. Les retours publiés sur
+            Google par les personnes qui nous ont confié leur véhicule.
+          </p>
+          <div className="reviews-hero-actions">
+            <a
+              className="button button-light"
+              href={business.reviewsUrl}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <span className="link-label">Voir sur Google</span> <Arrow />
+            </a>
+            <a
+              className="text-link"
+              href={business.maps}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <span className="link-label">Laisser un avis</span> <Arrow />
+            </a>
+          </div>
+        </div>
+        <div className="rating-panel">
+          <GoogleMark size={26} />
+          <span className="rating-score">
+            <span data-count="5" data-decimals="1">
+              5,0
+            </span>
+          </span>
+          <Stars size={22} />
+          <span className="rating-count">{googleRating.count} avis Google</span>
+          <ul className="rating-bars" aria-label="Répartition des notes">
+            {[5, 4, 3, 2, 1].map((n) => (
+              <li key={n}>
+                <span>{n}</span>
+                <i
+                  style={
+                    { "--w": n === 5 ? "100%" : "0%" } as React.CSSProperties
+                  }
+                />
+                <span>{n === 5 ? googleRating.count : 0}</span>
+              </li>
+            ))}
+          </ul>
+          <div className="rating-themes">
+            {googleRating.themes.map(([t, n]) => (
+              <span key={t}>
+                {t} <b>{n}</b>
+              </span>
+            ))}
+          </div>
+        </div>
+      </section>
+      <section className="reviews-grid section">
+        <div className="reviews-masonry" data-stagger>
+          {reviews.map((r, i) => (
+            <ReviewCard r={r} i={i % 6} key={r.name} />
+          ))}
+        </div>
+        <p className="reviews-silent">
+          Cinq étoiles également, sans commentaire :{" "}
+          {silentReviewers.join(", ")}.
+        </p>
+        <p className="fine-print">
+          Avis publiés sur Google. Les textes sont reproduits tels que rédigés
+          par leurs auteurs, à la ponctuation près. Note et nombre d’avis
+          relevés le 21 septembre 2026.
+        </p>
+      </section>
+      <section className="review-invite section">
+        <div className="frame">
+          <Photo
+            id="06"
+            alt="Deux membres de l’équipe auprès d’un véhicule à l’atelier"
+            parallax
+          />
+        </div>
+        <div>
+          <Eyebrow>Vous êtes passé chez DIMA ?</Eyebrow>
+          <h2>
+            Votre retour
+            <br />
+            compte.
           </h2>
           <p>
-            Vous avez confié votre véhicule à DIMA ? Partagez votre retour
-            directement avec l’équipe.
+            Un avis Google aide les prochains clients à nous trouver et nous
+            aide à progresser. Quelques lignes suffisent.
           </p>
           <a
-            className="text-link"
-            href={
-              "mailto:" +
-              business.email +
-              "?subject=Mon%20exp%C3%A9rience%20chez%20DIMA"
-            }
+            className="button"
+            href={business.maps}
+            target="_blank"
+            rel="noreferrer"
           >
-            Écrire à l’atelier <Arrow />
+            <span className="link-label">Écrire un avis Google</span> <Arrow />
           </a>
-          <p className="fine-print">
-            Aucun avis ni aucune note agrégée n’est reproduit ici sans
-            provenance confirmée.
-          </p>
-          <Link to="/realisations">Voir le travail de l’atelier</Link>
         </div>
-        <Photo
-          id="06"
-          alt="Deux membres de l’équipe auprès d’un véhicule à l’atelier"
-        />
       </section>
       <QuoteCTA />
     </>
@@ -761,56 +1089,122 @@ export function Contact() {
         title="Un échange. Puis les bonnes décisions."
       />
       <section className="contact-layout section">
-        <div>
-          <p className="eyebrow">L’atelier vous répond</p>
+        <div className="contact-main">
+          <p className="eyebrow">
+            <span className="red-dash" />
+            L’atelier vous répond
+          </p>
           <a className="contact-phone" href={"tel:" + business.tel}>
             {business.phone}
           </a>
           <a className="contact-email" href={"mailto:" + business.email}>
-            {business.email}
+            <MailIcon size={18} /> {business.email}
           </a>
-          <div className="contact-address">
-            <h2>Nous trouver.</h2>
-            <address>
-              {business.name}
-              <br />
-              {business.address}
-              <br />
-              {business.city}
-              <br />
-              Vaud, Suisse
-            </address>
-            <a
-              className="text-link"
-              href={business.maps}
-              target="_blank"
-              rel="noreferrer"
-            >
-              Ouvrir l’itinéraire <Arrow />
+          <div className="contact-grid">
+            <div>
+              <p className="eyebrow">
+                <PinIcon size={14} /> Adresse
+              </p>
+              <address>
+                {business.name}
+                <br />
+                {business.address}
+                <br />
+                {business.city}
+                <br />
+                {business.region}
+              </address>
+              <a
+                className="text-link"
+                href={business.maps}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <span className="link-label">Ouvrir l’itinéraire</span>{" "}
+                <Arrow />
+              </a>
+            </div>
+            <div>
+              <p className="eyebrow">
+                <ClockIcon size={14} /> Horaires
+              </p>
+              <dl className="hours">
+                {business.hours.map(([d, h]) => (
+                  <div key={d}>
+                    <dt>{d}</dt>
+                    <dd>{h}</dd>
+                  </div>
+                ))}
+              </dl>
+              <p className="fine-print">{business.hoursNote}</p>
+            </div>
+          </div>
+          <div className="founder-cards">
+            {business.founders.map((f) => (
+              <a key={f.name} href={"tel:" + f.tel} className="founder-card">
+                <span className="eyebrow">{f.role}</span>
+                <strong>{f.name}</strong>
+                <span className="founder-phone">
+                  <PhoneIcon size={14} /> {f.phone}
+                </span>
+              </a>
+            ))}
+          </div>
+          <div className="contact-social">
+            <a href={business.instagram} target="_blank" rel="noreferrer">
+              <InstagramIcon size={16} /> {business.instagramHandle}
+            </a>
+            <a href={business.reviewsUrl} target="_blank" rel="noreferrer">
+              <GoogleMark size={16} /> {googleRating.value.toFixed(1)} ·{" "}
+              {googleRating.count} avis
             </a>
           </div>
-          <p>
-            Contactez l’atelier pour confirmer les horaires et organiser votre
-            passage.
-          </p>
-          <details>
-            <summary>Contacter les fondateurs</summary>
-            <p>
-              Arlind Mamuti : <a href="tel:+41772186766">077 218 67 66</a>
-            </p>
-            <p>
-              Rizah Dibrani : <a href="tel:+41763381002">076 338 10 02</a>
-            </p>
-          </details>
           <Link className="button" to="/devis">
             Préparer une demande de devis
           </Link>
         </div>
-        <Photo
-          id="14"
-          alt="Entrée de l’atelier DIMA et véhicule violet devant la façade"
-          eager
-        />
+        <div className="contact-visual">
+          <div className="frame">
+            <Photo
+              id="14"
+              alt="Entrée de l’atelier DIMA et véhicule violet devant la façade"
+              eager
+              parallax
+            />
+          </div>
+        </div>
+      </section>
+      <section className="map-section">
+        <div className="map-caption">
+          <Eyebrow>Nous trouver</Eyebrow>
+          <h2>
+            {business.address},
+            <br />
+            {business.city}.
+          </h2>
+          <p>
+            À Aclens, entre Morges et Cossonay, à quelques minutes de la sortie
+            autoroutière. L’atelier vous accueille sur rendez-vous ou pendant
+            les horaires d’ouverture.
+          </p>
+          <a
+            className="text-link"
+            href={business.maps}
+            target="_blank"
+            rel="noreferrer"
+          >
+            <span className="link-label">Itinéraire Google Maps</span> <Arrow />
+          </a>
+        </div>
+        <div className="map-frame">
+          <iframe
+            title="Plan d’accès à DIMA AR Carrosserie, Chemin du Coteau 21a, 1123 Aclens"
+            src={business.mapsEmbed}
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            allowFullScreen
+          />
+        </div>
       </section>
     </>
   );
@@ -821,7 +1215,7 @@ export function FAQPage() {
       <PageIntro
         eyebrow="Les réponses de l’atelier"
         title="Avant de nous rendre visite."
-        text="Prestations, devis et coordonnées : les informations utiles pour préparer votre échange avec DIMA."
+        text="Prestations, devis, horaires et coordonnées : les informations utiles pour préparer votre échange avec DIMA."
       />
       <section className="section faq-page">
         <FAQ items={faqs} />
@@ -836,6 +1230,7 @@ export function QuotePage() {
       <PageIntro
         eyebrow="Parlons de votre véhicule"
         title="Votre devis commence ici."
+        text="Gratuit et sans engagement."
       />
       <section className="section quote-page">
         <Suspense fallback={<p>Chargement du parcours de devis…</p>}>
@@ -859,6 +1254,8 @@ export function Legal() {
           <br />
           {business.address}, {business.city}
           <br />
+          IDE : {business.uid}
+          <br />
           <a href={"mailto:" + business.email}>{business.email}</a>
           <br />
           {business.phone}
@@ -879,12 +1276,21 @@ export function Legal() {
           assurance. Pour une réponse adaptée à votre véhicule, contactez
           l’atelier.
         </p>
-        <h2>Navigation</h2>
+        <h2>Navigation et services tiers</h2>
         <p>
           Cette version du site n’utilise pas de cookies publicitaires ni de
           suivi analytique. Les vidéos et les photographies sont hébergées avec
-          le site. Les liens vers Instagram et Google Maps ouvrent des services
-          externes, soumis à leurs propres règles de confidentialité.
+          le site. La page Contact intègre une carte Google Maps ; son
+          chargement transmet votre adresse IP à Google, selon les règles de
+          confidentialité de Google. Les liens vers Instagram et Google ouvrent
+          des services externes soumis à leurs propres règles.
+        </p>
+        <h2>Avis</h2>
+        <p>
+          Les avis reproduits sur la page Avis Google sont publics et
+          proviennent de la fiche Google de l’atelier. Ils sont cités avec le
+          prénom et le nom affichés par leurs auteurs. Pour toute demande de
+          retrait, contactez {business.email}.
         </p>
         <h2>Vos informations</h2>
         <p>

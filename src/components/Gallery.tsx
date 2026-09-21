@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { projects } from "../data/content";
 import { Photo, href, Arrow } from "./Media";
+import { PlayIcon } from "./Icons";
 export function Gallery({ preview = false }: { preview?: boolean }) {
   const [filter, setFilter] = useState("Tous");
   const items = preview
@@ -34,6 +35,7 @@ export function Gallery({ preview = false }: { preview?: boolean }) {
             className="project"
             href={href("/realisations/" + p.slug)}
             key={p.slug}
+            style={{ "--i": i } as React.CSSProperties}
           >
             <div className="project-image">
               <Photo
@@ -47,7 +49,7 @@ export function Gallery({ preview = false }: { preview?: boolean }) {
               />
               {p.video && (
                 <span className="film-tag">
-                  Film d’atelier <span aria-hidden="true">▷</span>
+                  <PlayIcon size={12} /> Séquence atelier
                 </span>
               )}
             </div>

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { answer, localAnswer, type Reply } from "../adapters/assistant";
 import { business } from "../data/content";
 import { href } from "./Media";
+import { CloseIcon, ArrowIcon } from "./Icons";
 export default function Assistant() {
   const dialog = useRef<HTMLDialogElement>(null);
   const trigger = useRef<HTMLButtonElement>(null);
@@ -57,8 +58,7 @@ export default function Assistant() {
             />
           </svg>
         </span>
-        <span>DIMA Assistant</span>
-        <span aria-hidden="true">+</span>
+        <span className="assistant-label">DIMA Assistant</span>
       </button>
       <dialog
         ref={dialog}
@@ -78,7 +78,7 @@ export default function Assistant() {
             aria-label="Fermer DIMA Assistant"
             onClick={() => dialog.current?.close()}
           >
-            ×
+            <CloseIcon size={22} />
           </button>
         </div>
         <p className="assistant-notice">
@@ -97,7 +97,7 @@ export default function Assistant() {
               <p>{m.text}</p>
               {m.link && (
                 <a href={m.link.startsWith("/") ? href(m.link) : m.link}>
-                  {m.label} ↗
+                  {m.label} <ArrowIcon size={13} />
                 </a>
               )}
             </div>

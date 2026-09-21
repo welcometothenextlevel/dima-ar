@@ -8,15 +8,21 @@ export function localAnswer(input: string): Reply {
   if (/(horaire|ouvert|ferme|samedi|dimanche)/.test(q))
     return {
       text:
-        "Pour confirmer les horaires et organiser votre passage, appelez l’atelier au " +
+        "L’atelier est ouvert du lundi au vendredi, de 08:00 à 12:00 et de 13:20 à 18:15 ; fermé le week-end. Pour un rendez-vous, appelez le " +
         business.phone +
         ".",
       link: "tel:" + business.tel,
       label: "Appeler l’atelier",
     };
+  if (/(avis|note|etoile|google|reputation)/.test(q))
+    return {
+      text: "DIMA AR affiche une note de 5,0 sur 5 pour 23 avis Google. Vous pouvez les lire sur la page Avis.",
+      link: "/avis",
+      label: "Lire les avis",
+    };
   if (/(prix|cout|tarif|combien|devis)/.test(q))
     return {
-      text: "Le devis dépend du véhicule et de l’intervention. Décrivez votre besoin et ajoutez des photos dans le parcours de devis. Aucun tarif ne peut être confirmé sans évaluation.",
+      text: "Le devis est gratuit et dépend du véhicule et de l’intervention. Décrivez votre besoin et ajoutez des photos dans le parcours de devis. Aucun tarif ne peut être confirmé sans évaluation.",
       link: "/devis",
       label: "Préparer mon devis",
     };
