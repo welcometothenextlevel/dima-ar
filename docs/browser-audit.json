@@ -1,0 +1,24 @@
+{
+  "routeViewportChecks": 182,
+  "widths": [
+    375,
+    390,
+    430,
+    768,
+    1280,
+    1440,
+    1920
+  ],
+  "interactions": [
+    "mobile navigation",
+    "Escape and focus restoration",
+    "assistant focused / submitted / short viewport",
+    "desktop menu",
+    "gallery filters",
+    "video playback",
+    "quote 6 steps, upload, consent, email handoff"
+  ],
+  "errors": [],
+  "failures": [],
+  "badResponses": []
+}
