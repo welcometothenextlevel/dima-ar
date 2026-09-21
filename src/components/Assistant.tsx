@@ -14,6 +14,24 @@ export default function Assistant() {
   ]);
   const [value, setValue] = useState("");
   const [busy, setBusy] = useState(false);
+  const [nudge, setNudge] = useState(false);
+  useEffect(() => {
+    let seen = false;
+    try {
+      seen = sessionStorage.getItem("dima-nudge") === "1";
+    } catch {}
+    if (seen) return;
+    const t = setTimeout(() => {
+      if (!dialog.current?.open) setNudge(true);
+    }, 30000);
+    return () => clearTimeout(t);
+  }, []);
+  function dismissNudge() {
+    setNudge(false);
+    try {
+      sessionStorage.setItem("dima-nudge", "1");
+    } catch {}
+  }
   useEffect(() => {
     log.current?.scrollTo({ top: log.current.scrollHeight });
   }, [messages, busy]);
@@ -39,11 +57,31 @@ export default function Assistant() {
     }
   }
   function open() {
+    if (nudge) dismissNudge();
     dialog.current?.showModal();
     document.body.style.overflow = "hidden";
   }
   return (
     <>
+      {nudge && (
+        <div className="assistant-nudge" role="status">
+          <button
+            className="assistant-nudge-close"
+            onClick={dismissNudge}
+            aria-label="Fermer le message"
+          >
+            <CloseIcon size={16} />
+          </button>
+          <p className="eyebrow">DIMA Assistant</p>
+          <p>
+            Une question sur un sinistre, une réparation ou nos horaires ? Je
+            vous réponds en quelques secondes.
+          </p>
+          <button className="assistant-nudge-open" onClick={open}>
+            Poser ma question <ArrowIcon size={14} />
+          </button>
+        </div>
+      )}
       <button
         className="assistant-trigger"
         ref={trigger}

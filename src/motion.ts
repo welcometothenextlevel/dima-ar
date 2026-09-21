@@ -7,9 +7,14 @@ function header() {
   if (!el) return;
   let last = scrollY;
   let ticking = false;
+  const bar = el.querySelector<HTMLElement>(".scroll-progress");
   function update() {
     const y = scrollY;
     el!.classList.toggle("is-scrolled", y > 24);
+    if (bar) {
+      const max = document.documentElement.scrollHeight - innerHeight;
+      bar.style.transform = `scaleX(${max > 0 ? Math.min(1, y / max) : 0})`;
+    }
     if (document.documentElement.classList.contains("menu-open")) {
       el!.classList.remove("is-hidden");
     } else if (y > last + 6 && y > 160) el!.classList.add("is-hidden");

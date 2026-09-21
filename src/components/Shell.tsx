@@ -19,11 +19,11 @@ const headerLinks = [
 export function Header({ path }: { path: string }) {
   const [open, setOpen] = useState(false);
   const trigger = useRef<HTMLButtonElement>(null);
-  const first = useRef<HTMLAnchorElement>(null);
+  const panel = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (!open) return;
     document.documentElement.classList.add("menu-open");
-    const t = setTimeout(() => first.current?.focus(), 350);
+    const t = setTimeout(() => panel.current?.focus(), 350);
     function key(e: KeyboardEvent) {
       if (e.key === "Escape") setOpen(false);
     }
@@ -41,6 +41,7 @@ export function Header({ path }: { path: string }) {
         Aller au contenu
       </a>
       <header className="header" data-header>
+        <span className="scroll-progress" aria-hidden="true" />
         <a href={href("/")} className="brand" aria-label="DIMA AR, accueil">
           <Photo id="29" alt="DIMA AR Carrosserie Aclens" eager sizes="170px" />
         </a>
@@ -93,6 +94,8 @@ export function Header({ path }: { path: string }) {
         aria-label="Menu du site"
         aria-hidden={!open}
         inert={!open}
+        tabIndex={-1}
+        ref={panel}
       >
         <div className="site-menu-backdrop" aria-hidden="true">
           <Photo
@@ -108,7 +111,6 @@ export function Header({ path }: { path: string }) {
               <a
                 key={to}
                 href={href(to)}
-                ref={i === 0 ? first : undefined}
                 style={{ "--i": i } as React.CSSProperties}
                 aria-current={path === to ? "page" : undefined}
               >
