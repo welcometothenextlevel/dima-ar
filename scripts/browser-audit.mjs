@@ -101,7 +101,7 @@ await page.getByRole("button", { name: "Tous", exact: true }).click();
 assert.equal(await page.locator(".project").count(), 6);
 await page.goto(origin + "/dima-ar/services/peinture/");
 assert.equal(await page.locator("video").count(), 0);
-await page.getByRole("button", { name: /Lire le film/ }).click();
+await page.getByRole("button", { name: /Voir le film/ }).click();
 await page.waitForFunction(() => {
   const v = document.querySelector("video");
   return v && v.readyState >= 2;

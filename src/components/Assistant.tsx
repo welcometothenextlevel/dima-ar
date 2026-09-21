@@ -50,7 +50,12 @@ export default function Assistant() {
         aria-label="Ouvrir DIMA Assistant"
       >
         <span className="assistant-symbol" aria-hidden="true">
-          D
+          <svg viewBox="0 0 16 16" aria-hidden="true">
+            <path
+              d="M4 2h4a6 6 0 0 1 0 12H4V2Zm3 3v6h1a3 3 0 0 0 0-6H7Z"
+              fill="currentColor"
+            />
+          </svg>
         </span>
         <span>DIMA Assistant</span>
         <span aria-hidden="true">+</span>
@@ -58,6 +63,7 @@ export default function Assistant() {
       <dialog
         ref={dialog}
         className="assistant"
+        aria-label="DIMA Assistant"
         onClose={() => {
           document.body.style.overflow = "";
           trigger.current?.focus();

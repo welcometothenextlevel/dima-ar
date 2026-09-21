@@ -1,12 +1,15 @@
 import React from "react";
 import { renderToPipeableStream } from "react-dom/server";
 import { Writable } from "node:stream";
-import { readFile, writeFile, mkdir } from "node:fs/promises";
+import { readFile, writeFile, mkdir, readdir } from "node:fs/promises";
 import App from "../src/App";
 import { routes, pageMeta, business, services } from "../src/data/content";
 const base = process.env.SITE_BASE || "/dima-ar/";
 const origin =
   process.env.SITE_ORIGIN || "https://welcometothenextlevel.github.io";
+const fontFile = (await readdir("dist/assets")).find((f) =>
+  f.endsWith(".woff2"),
+);
 const template = await readFile("dist/index.html", "utf8");
 const escape = (s: string) =>
   s.replaceAll("&", "&amp;").replaceAll('"', "&quot;").replaceAll("<", "&lt;");
@@ -78,7 +81,7 @@ for (const path of [...routes, "/404"]) {
       provider: { "@id": origin + base + "#business" },
       areaServed: { "@type": "AdministrativeArea", name: "Vaud" },
     });
-  const extra = `<meta name="description" content="${escape(meta.description)}"><link rel="canonical" href="${canonical}"><meta property="og:type" content="website"><meta property="og:locale" content="fr_CH"><meta property="og:title" content="${escape(meta.title)} · DIMA AR"><meta property="og:description" content="${escape(meta.description)}"><meta property="og:url" content="${canonical}"><meta property="og:image" content="${origin + base}media/07-960.webp"><meta property="og:image:alt" content="Véhicule dans l’atelier DIMA AR à Aclens"><meta name="twitter:card" content="summary_large_image"><link rel="icon" type="image/svg+xml" href="${base}favicon.svg">${path === "/404" ? '<meta name="robots" content="noindex">' : ""}<script type="application/ld+json">${JSON.stringify(schema).replaceAll("<", "\\u003c")}</script>`;
+  const extra = `<link rel="preload" as="font" type="font/woff2" href="${base}assets/${fontFile}" crossorigin><meta name="description" content="${escape(meta.description)}"><link rel="canonical" href="${canonical}"><meta property="og:type" content="website"><meta property="og:locale" content="fr_CH"><meta property="og:title" content="${escape(meta.title)} · DIMA AR"><meta property="og:description" content="${escape(meta.description)}"><meta property="og:url" content="${canonical}"><meta property="og:image" content="${origin + base}media/07-960.webp"><meta property="og:image:alt" content="Véhicule dans l’atelier DIMA AR à Aclens"><meta name="twitter:card" content="summary_large_image"><link rel="icon" type="image/svg+xml" href="${base}favicon.svg">${path === "/404" ? '<meta name="robots" content="noindex">' : ""}<script type="application/ld+json">${JSON.stringify(schema).replaceAll("<", "\\u003c")}</script>`;
   const result = template
     .replace(
       /<title>.*?<\/title>/,

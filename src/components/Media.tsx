@@ -63,7 +63,7 @@ export function Film({ id, title }: { id: string; title: string }) {
             <button
               className="play-button"
               onClick={() => setPlay(true)}
-              aria-label={`Lire le film : ${title}`}
+              aria-label={`Voir le film : ${title}`}
             >
               <span aria-hidden="true">▷</span> Voir le film
             </button>

@@ -1,0 +1,30 @@
+[
+  {
+    "path": "/",
+    "violations": []
+  },
+  {
+    "path": "/services/peinture/",
+    "violations": []
+  },
+  {
+    "path": "/devis/",
+    "violations": []
+  },
+  {
+    "path": "/contact/",
+    "violations": []
+  },
+  {
+    "path": "/realisations/",
+    "violations": []
+  },
+  {
+    "path": "assistant",
+    "violations": []
+  },
+  {
+    "path": "menu",
+    "violations": []
+  }
+]

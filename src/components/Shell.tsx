@@ -94,7 +94,12 @@ export function Header({ path }: { path: string }) {
           Menu <span aria-hidden="true">☰</span>
         </button>
       </header>
-      <dialog className="mobile-menu" ref={dialog} onClose={restore}>
+      <dialog
+        aria-label="Navigation mobile"
+        className="mobile-menu"
+        ref={dialog}
+        onClose={restore}
+      >
         <div className="mobile-menu-top">
           <a href={href("/")} className="brand">
             <Photo id="29" alt="DIMA AR" sizes="160px" />
